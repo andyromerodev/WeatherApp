@@ -4,43 +4,66 @@ import android.content.pm.ApplicationInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.SearchView
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.R
+import com.example.weatherapp.data.model.WeatherModel
 import com.example.weatherapp.data.network.WeatherService
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.getApplicationInfoCompat
+import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var apiKey: String
+
+    private val weatherViewModel: WeatherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.idSearchView.setOnQueryTextListener(this)
         setContentView(binding.root)
 
         val applicationInfo: ApplicationInfo =
             packageManager.getApplicationInfoCompat(application.packageName, 0)
 
-        val apiKey = applicationInfo.metaData.getString("API_KEY")
+        apiKey = applicationInfo.metaData.getString("API_KEY").toString()
 
         Log.d("APIKEY", apiKey.toString())
 
-        lifecycleScope.launch {
-            val weather = WeatherService()
-            if (apiKey != null) {
-               val weth = weather.getWeatherByCity("London", apiKey)
-                binding.idTextView.text = weth.main.temp.toString()
-                Log.d("WEATHER-TEMP", weth.main.temp.toString())
-            }else{
-                Log.d("ERROR", "ApiKey Error")
-            }
-        }
-
-
-
+        weatherViewModel.weatherModel.observe(this, Observer{
+            binding.idTextView.text = it.main.temp.toString()
+        })
+//        lifecycleScope.launch {
+//            val weather = WeatherService()
+//            if (apiKey != null) {
+//                val weth = weather.getWeatherByCity("London", apiKey)
+//                binding.idTextView.text = weth.main.temp.toString()
+//                Log.d("WEATHER-TEMP", weth.main.temp.toString())
+//            } else {
+//                Log.d("ERROR", "ApiKey Error")
+//            }
+//        }
 
     }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+//        weatherViewModel.city.postValue(query.orEmpty())
+//        weatherViewModel.apiKey.postValue(apiKey)
+        weatherViewModel.onCreate(query.toString(), apiKey)
+        return true
+    }
+
+    override fun onQueryTextChange(p0: String?): Boolean {
+        return true
+    }
+
 }
