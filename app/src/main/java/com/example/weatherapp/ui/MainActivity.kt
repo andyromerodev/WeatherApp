@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
@@ -40,13 +41,21 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         Log.d("APIKEY", apiKey.toString())
 
         weatherViewModel.weatherModel.observe(this, Observer{
-            binding.idTextView.text = it.main.temp.toString()
+            binding.idTVTemp.text = it.main.temp.toString()
+            binding.idTVTempMin.text = it.main.temp_min.toString()
+            binding.idTVTempMax.text = it.main.temp_max.toString()
+        })
+
+        binding.loading.isVisible = false
+
+        weatherViewModel.isLoading.observe(this, Observer{
+            binding.loading.isVisible = it
         })
 //        lifecycleScope.launch {
 //            val weather = WeatherService()
 //            if (apiKey != null) {
 //                val weth = weather.getWeatherByCity("London", apiKey)
-//                binding.idTextView.text = weth.main.temp.toString()
+//                binding.idTVTemp.text = weth.main.temp.toString()
 //                Log.d("WEATHER-TEMP", weth.main.temp.toString())
 //            } else {
 //                Log.d("ERROR", "ApiKey Error")

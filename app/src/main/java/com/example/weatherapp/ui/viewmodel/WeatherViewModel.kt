@@ -1,5 +1,6 @@
 package com.example.weatherapp.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,8 +20,13 @@ class WeatherViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading.postValue(true)
 
+            //TODO Review this code
             val result = GetWeatherUseCase(city, apiKey)
+
+            Log.d("DEBUGWEATHER", result.invoke().toString())
             val currentWeather = WeatherProvider.resultWeatherProvider
+            Log.d("currentWeather", currentWeather.toString())
+
             weatherModel.postValue(currentWeather)
 
             if (!result.equals(0)) {

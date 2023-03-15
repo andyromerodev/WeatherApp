@@ -12,7 +12,4 @@ class GetWeatherUseCase(private var city: String, private var apiKey: String) {
         repository.getWeatherByCity(city, apiKey)
         return WeatherProvider.resultWeatherProvider
     }
-
-
-
 }

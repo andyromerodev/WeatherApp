@@ -11,6 +11,7 @@ interface WeatherApiClient {
     suspend fun getWeather(
         @Query("q") city: String,
         @Query("appid") apiKey: String,
+        @Query("units") metric: String = "metric",
     ): Response<WeatherModel>
 
 }
