@@ -1,18 +1,14 @@
-package com.example.weatherapp
+package com.example.weatherapp.ui
 
 import android.content.pm.ApplicationInfo
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
-import com.example.weatherapp.core.WeatherService
+import com.example.weatherapp.R
+import com.example.weatherapp.data.network.WeatherService
 import com.example.weatherapp.databinding.ActivityMainBinding
-import com.example.weatherapp.model.Weather
-import com.example.weatherapp.model.WeatherModel
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import com.example.weatherapp.getApplicationInfoCompat
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
