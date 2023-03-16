@@ -16,8 +16,10 @@ import com.example.weatherapp.data.network.WeatherService
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.getApplicationInfoCompat
 import com.example.weatherapp.ui.viewmodel.WeatherViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
     private lateinit var binding: ActivityMainBinding
