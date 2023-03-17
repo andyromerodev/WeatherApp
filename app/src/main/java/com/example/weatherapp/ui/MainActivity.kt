@@ -16,6 +16,7 @@ import com.example.weatherapp.data.network.WeatherService
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.getApplicationInfoCompat
 import com.example.weatherapp.ui.viewmodel.WeatherViewModel
+import com.example.weatherapp.utils.GetLocation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
         Log.d("APIKEY", apiKey.toString())
 
-        weatherViewModel.weatherModel.observe(this, Observer{
+        weatherViewModel.weatherModel.observe(this, Observer {
             binding.idTVTemp.text = it.main.temp.toString()
             binding.idTVTempMin.text = it.main.temp_min.toString()
             binding.idTVTempMax.text = it.main.temp_max.toString()
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
         binding.loading.isVisible = false
 
-        weatherViewModel.isLoading.observe(this, Observer{
+        weatherViewModel.isLoading.observe(this, Observer {
             binding.loading.isVisible = it
         })
 //        lifecycleScope.launch {
@@ -67,8 +68,14 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-//        weatherViewModel.city.postValue(query.orEmpty())
-//        weatherViewModel.apiKey.postValue(apiKey)
+
+        val location = GetLocation()
+        val lastLocation = location.getLocation(this)
+
+        lastLocation?.addOnSuccessListener {
+            Log.d("THELATITUDE", it.latitude.toString() )
+        }
+
         weatherViewModel.onCreate(query.toString(), apiKey)
         return true
     }
