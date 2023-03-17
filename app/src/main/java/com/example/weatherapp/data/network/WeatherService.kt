@@ -17,10 +17,10 @@ class WeatherService {
         }
     }
 
-    suspend fun getWeatherByLatLong(city: String, apiKey: String): WeatherModel {
+    suspend fun getWeatherByCoordinates(latitude: Double, longitude: Double, apiKey: String): WeatherModel {
 
         return withContext(Dispatchers.IO) {
-            val response = retrofit.create(WeatherApiClient::class.java).getWeatherLatLong(city, apiKey)
+            val response = retrofit.create(WeatherApiClient::class.java).getWeatherLatLong(latitude, longitude, apiKey)
             response.body()!!
         }
     }

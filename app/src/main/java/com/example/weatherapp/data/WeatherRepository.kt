@@ -14,8 +14,8 @@ class WeatherRepository {
         return response
     }
 
-    suspend fun getWeatherByLatLong(city: String, apiKey: String): WeatherModel {
-        val response = api.getWeatherByLatLong(city,apiKey)
+    suspend fun getWeatherByCoordinates(latitude: Double, longitude: Double, apiKey: String): WeatherModel {
+        val response = api.getWeatherByCoordinates(latitude, longitude, apiKey)
         WeatherProvider.resultWeatherProvider = response
         return response
     }

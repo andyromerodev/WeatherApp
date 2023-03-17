@@ -4,6 +4,7 @@ import android.content.pm.ApplicationInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
@@ -21,7 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener {
+class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener,
+    View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.idSearchView.setOnQueryTextListener(this)
+        binding.buttonGPS.setOnClickListener(this)
         setContentView(binding.root)
 
         val applicationInfo: ApplicationInfo =
@@ -47,6 +50,10 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
             binding.idTVTemp.text = it.main.temp.toString()
             binding.idTVTempMin.text = it.main.temp_min.toString()
             binding.idTVTempMax.text = it.main.temp_max.toString()
+            Log.d("NAMESEARCH", it.name)
+            binding.idSearchView.onActionViewExpanded()
+            binding.idSearchView.clearFocus()
+            binding.idSearchView.setQuery(it.name, false)
         })
 
         binding.loading.isVisible = false
@@ -54,7 +61,8 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         weatherViewModel.isLoading.observe(this, Observer {
             binding.loading.isVisible = it
         })
-//        lifecycleScope.launch {
+
+        //        lifecycleScope.launch {
 //            val weather = WeatherService()
 //            if (apiKey != null) {
 //                val weth = weather.getWeatherByCity("London", apiKey)
@@ -69,19 +77,26 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
     override fun onQueryTextSubmit(query: String?): Boolean {
 
-        val location = GetLocation()
-        val lastLocation = location.getLocation(this)
-
-        lastLocation?.addOnSuccessListener {
-            Log.d("THELATITUDE", it.latitude.toString() )
-        }
-
-        weatherViewModel.onCreate(query.toString(), apiKey)
+        weatherViewModel.getWeatherByCity(query.toString(), apiKey)
         return true
     }
 
     override fun onQueryTextChange(p0: String?): Boolean {
         return true
     }
+
+    override fun onClick(p0: View?) {
+
+        val location = GetLocation()
+        val lastLocation = location.getLocation(this)
+        lastLocation?.addOnSuccessListener {
+            Log.d("THELATITUDE", it.latitude.toString())
+
+            weatherViewModel.getWeatherByCoordinates(it.latitude.toDouble(),
+                it.longitude.toDouble(),
+                apiKey)
+        }
+    }
+
 
 }
