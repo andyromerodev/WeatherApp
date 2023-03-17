@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.idSearchView.setOnQueryTextListener(this)
         binding.buttonGPS.setOnClickListener(this)
+        binding.loading.isVisible = false
         setContentView(binding.root)
 
         val applicationInfo: ApplicationInfo =
@@ -44,39 +45,22 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
         apiKey = applicationInfo.metaData.getString("API_KEY").toString()
 
-        Log.d("APIKEY", apiKey.toString())
-
         weatherViewModel.weatherModel.observe(this, Observer {
             binding.idTVTemp.text = it.main.temp.toString()
             binding.idTVTempMin.text = it.main.temp_min.toString()
             binding.idTVTempMax.text = it.main.temp_max.toString()
-            Log.d("NAMESEARCH", it.name)
             binding.idSearchView.onActionViewExpanded()
             binding.idSearchView.clearFocus()
             binding.idSearchView.setQuery(it.name, false)
         })
 
-        binding.loading.isVisible = false
-
         weatherViewModel.isLoading.observe(this, Observer {
             binding.loading.isVisible = it
         })
 
-        //        lifecycleScope.launch {
-//            val weather = WeatherService()
-//            if (apiKey != null) {
-//                val weth = weather.getWeatherByCity("London", apiKey)
-//                binding.idTVTemp.text = weth.main.temp.toString()
-//                Log.d("WEATHER-TEMP", weth.main.temp.toString())
-//            } else {
-//                Log.d("ERROR", "ApiKey Error")
-//            }
-//        }
-
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-
         weatherViewModel.getWeatherByCity(query.toString(), apiKey)
         return true
     }
@@ -85,13 +69,12 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         return true
     }
 
-    override fun onClick(p0: View?) {
+    override fun onClick(view: View?) {
 
         val location = GetLocation()
         val lastLocation = location.getLocation(this)
         lastLocation?.addOnSuccessListener {
-            Log.d("THELATITUDE", it.latitude.toString())
-
+            
             weatherViewModel.getWeatherByCoordinates(it.latitude.toDouble(),
                 it.longitude.toDouble(),
                 apiKey)
