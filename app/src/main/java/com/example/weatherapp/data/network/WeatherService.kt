@@ -16,4 +16,12 @@ class WeatherService {
             response.body()!!
         }
     }
+
+    suspend fun getWeatherByLatLong(city: String, apiKey: String): WeatherModel {
+
+        return withContext(Dispatchers.IO) {
+            val response = retrofit.create(WeatherApiClient::class.java).getWeatherLatLong(city, apiKey)
+            response.body()!!
+        }
+    }
 }

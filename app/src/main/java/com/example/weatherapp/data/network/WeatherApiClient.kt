@@ -14,4 +14,11 @@ interface WeatherApiClient {
         @Query("units") metric: String = "metric",
     ): Response<WeatherModel>
 
+    @GET("weather")
+    suspend fun getWeatherLatLong(
+        @Query("q") city: String,
+        @Query("appid") apiKey: String,
+        @Query("units") metric: String = "metric",
+    ): Response<WeatherModel>
+
 }
