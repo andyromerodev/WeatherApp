@@ -25,17 +25,8 @@ class GetLocation {
     @SuppressLint("MissingPermission")
     fun getLocation(context: Context): Task<Location>? {
 
-        if (ActivityCompat.checkSelfPermission(context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED &&
-            ActivityCompat.checkSelfPermission(context,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(context as Activity,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                100)
-        }
+        val permission = GetPermission()
+        permission.checkPermission(context)
 
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 
