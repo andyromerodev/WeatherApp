@@ -21,8 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temperature"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/idTVTemp"
@@ -42,8 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temperature_min"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/idTVTempMin"
@@ -63,8 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/temperature_max"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/idTVTempMax"
@@ -82,11 +79,11 @@
 
         <Button
             android:id="@+id/buttonGPS"
-            android:text="@string/weathergps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:text="@string/weathergps"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 
@@ -101,6 +98,4 @@
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
-
-
 </LinearLayout>

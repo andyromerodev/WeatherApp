@@ -16,25 +16,14 @@ import com.google.android.gms.tasks.Task
 
 class GetLocation {
 
-    //lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
-    private val coord = mutableMapOf<String, String>()
-
-    private var mLocation: android.location.Location? = null
-
     @SuppressLint("MissingPermission")
     fun getLocation(context: Context): Task<Location>? {
-
-        val permission = GetPermission()
-        permission.checkPermission(context)
 
         val fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 
         try {
             val location =
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-                    Log.d("LOCATIONGPS", location?.latitude.toString())
-                    Log.d("LOCATIONGPS", location?.longitude.toString())
                 }
 
             return location
@@ -46,31 +35,3 @@ class GetLocation {
 
 
 }
-
-
-//        location.addOnSuccessListener { location ->
-//
-//            mLocation = location
-//
-//            Log.d("LOCATIONGPS", location.latitude.toString())
-//            Log.d("LOCATIONGPS", location.longitude.toString())
-//
-//            val latitude = location.latitude.toString()
-//            val longitude = location.longitude.toString()
-//
-//            getCoord(latitude, longitude)
-
-
-//private fun getCoord(latitude: String, longitude: String) {
-//    val latitudeR: String = latitude
-//    val longitudeR: String = longitude
-//    coord["latitude"] = latitudeR
-//    coord["longitude"] = longitudeR
-//    Log.d("LOCATIONRESULT", coord["latitude"].toString())
-//
-//}
-//
-//fun getCoordenadas(): Map<String, String> {
-//    Log.d("LOCATIONRESULT", coord["latitude"].toString())
-//    return coord
-//}

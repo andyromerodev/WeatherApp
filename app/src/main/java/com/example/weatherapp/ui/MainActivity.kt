@@ -1,11 +1,16 @@
 package com.example.weatherapp.ui
 
+import android.Manifest
+import android.app.Instrumentation.ActivityResult
 import android.content.pm.ApplicationInfo
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -18,6 +23,7 @@ import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.getApplicationInfoCompat
 import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import com.example.weatherapp.utils.GetLocation
+import com.example.weatherapp.utils.GetPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,6 +36,8 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
     private lateinit var apiKey: String
 
     private val weatherViewModel: WeatherViewModel by viewModels()
+
+    private val getPermission = GetPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,15 +79,16 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
     override fun onClick(view: View?) {
 
+        getPermission.runPermissionLocation()
+
         val location = GetLocation()
         val lastLocation = location.getLocation(this)
         lastLocation?.addOnSuccessListener {
-            
-            weatherViewModel.getWeatherByCoordinates(it.latitude.toDouble(),
-                it.longitude.toDouble(),
+
+            weatherViewModel.getWeatherByCoordinates(it.latitude,
+                it.longitude,
                 apiKey)
         }
     }
-
 
 }

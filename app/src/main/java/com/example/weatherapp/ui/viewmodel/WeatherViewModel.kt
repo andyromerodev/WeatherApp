@@ -14,19 +14,14 @@ class WeatherViewModel : ViewModel() {
 
     val weatherModel = MutableLiveData<WeatherModel>()
     val isLoading = MutableLiveData<Boolean>()
-//    val city = String
-//    val apiKey = String
 
     fun getWeatherByCity(city: String, apiKey: String) {
         viewModelScope.launch {
             isLoading.postValue(true)
 
-            //TODO Review this code
-            val result = GetWeatherUseCase(city, apiKey)
+            val result = GetWeatherUseCase(city, apiKey).invoke()
 
-            Log.d("DEBUGWEATHER", result.invoke().toString())
             val currentWeather = WeatherProvider.resultWeatherProvider
-            Log.d("currentWeather", currentWeather.toString())
 
             weatherModel.postValue(currentWeather)
 
@@ -40,12 +35,9 @@ class WeatherViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading.postValue(true)
 
-            //TODO Review this code
-            val result = GetWeatherByCoordinates(latitude, longitude, apiKey)
+            val result = GetWeatherByCoordinates(latitude, longitude, apiKey).invoke()
 
-            Log.d("DEBUGWEATHER", result.invoke().toString())
             val currentWeather = WeatherProvider.resultWeatherProvider
-            Log.d("currentWeather", currentWeather.toString())
 
             weatherModel.postValue(currentWeather)
 
@@ -55,11 +47,6 @@ class WeatherViewModel : ViewModel() {
         }
     }
 
-
-    fun getWeatherByCountryVM() {
-        val currentWeather = WeatherProvider.resultWeatherProvider
-        weatherModel.postValue(currentWeather)
-    }
 }
 
 

@@ -7,5 +7,6 @@
     <string name="humidity">Húmedad</string>
     <string name="pressure">Presión</string>
     <string name="weathergps">Datos del clima por GPS</string>
+    <string name="permiso">Permiso del GPS</string>
 
 </resources>
