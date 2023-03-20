@@ -69,7 +69,10 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        weatherViewModel.getWeatherByCity(query.toString(), apiKey)
+
+        weatherViewModel.cityViewModel.value = query.toString()
+        weatherViewModel.apiKeyViewModel.value = apiKey
+        weatherViewModel.getWeatherByCity()
         return true
     }
 

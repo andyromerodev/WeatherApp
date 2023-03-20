@@ -4,6 +4,7 @@ import android.os.Build
 import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.data.network.WeatherApiClient
 import com.example.weatherapp.domain.GetWeatherUseCase
+import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,13 +33,27 @@ object NetworkModule {
 
 
     @Provides
-    @Singleton
+    @Named("getWeatherUseCase")
     fun provideGetWeatherUseCase(
-        city: String,
-        apiKey: String,
-        repository: WeatherRepository,
+        @Named("city") city: String,
+        @Named("apiKey") apiKey: String,
+        repository: WeatherRepository
     ): GetWeatherUseCase {
         return GetWeatherUseCase(city, apiKey, repository)
     }
+
+    @Provides
+    @Named("city")
+    fun provideCity(): String {
+        return ""
+    }
+
+    @Provides
+    @Named("apiKey")
+    fun provideApiKey(): String {
+        // Devuelve el valor de la propiedad "apiKey" del archivo de configuración
+        return ""
+    }
+
 
 }
