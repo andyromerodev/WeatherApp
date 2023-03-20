@@ -4,13 +4,17 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.data.model.WeatherModel
 import com.example.weatherapp.data.model.WeatherProvider
 import com.example.weatherapp.domain.GetWeatherByCoordinates
 import com.example.weatherapp.domain.GetWeatherUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WeatherViewModel : ViewModel() {
+@HiltViewModel
+class WeatherViewModel @Inject constructor(private var result: GetWeatherUseCase) : ViewModel() {
 
     val weatherModel = MutableLiveData<WeatherModel>()
     val isLoading = MutableLiveData<Boolean>()
@@ -19,7 +23,11 @@ class WeatherViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading.postValue(true)
 
-            val result = GetWeatherUseCase(city, apiKey).invoke()
+            result = GetWeatherUseCase(city, apiKey, repository = WeatherRepository())
+
+            result.invoke()
+
+            //val result = GetWeatherUseCase(city, apiKey).invoke()
 
             val currentWeather = WeatherProvider.resultWeatherProvider
 
