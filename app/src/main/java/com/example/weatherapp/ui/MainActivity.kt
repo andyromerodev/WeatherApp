@@ -3,6 +3,7 @@ package com.example.weatherapp.ui
 import android.Manifest
 import android.app.Instrumentation.ActivityResult
 import android.content.pm.ApplicationInfo
+import android.location.Location
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.example.weatherapp.utils.GetLocation
 import com.example.weatherapp.utils.GetPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import okhttp3.internal.connection.Exchange
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener,
@@ -84,14 +86,24 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
         getPermission.runPermissionLocation()
 
-        val location = GetLocation()
-        val lastLocation = location.getLocation(this)
-        lastLocation?.addOnSuccessListener {
+        try {
+            val locationGet = GetLocation()
+            val lastLocation = locationGet.getLocation(this)
+            lastLocation?.addOnSuccessListener { locationgps: Location? ->
+                val latitude = locationgps?.latitude ?: 0.0
+                val longitude = locationgps?.longitude ?: 0.0
 
-            weatherViewModel.getWeatherByCoordinates(it.latitude,
-                it.longitude,
-                apiKey)
+                if (latitude != 0.0){
+                    weatherViewModel.getWeatherByCoordinates(latitude, longitude, apiKey)
+                }else{
+                    Toast.makeText(this,"Sin obtener las coordenadas - Vuelva a intentarlo", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        } catch (e: Exception) {
+            e.toString()
         }
+
     }
 
 }
