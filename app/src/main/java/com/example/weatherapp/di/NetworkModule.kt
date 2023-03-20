@@ -3,6 +3,7 @@ package com.example.weatherapp.di
 import android.os.Build
 import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.data.network.WeatherApiClient
+import com.example.weatherapp.domain.GetWeatherByCoordinates
 import com.example.weatherapp.domain.GetWeatherUseCase
 import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import dagger.Module
@@ -37,10 +38,22 @@ object NetworkModule {
     fun provideGetWeatherUseCase(
         @Named("city") city: String,
         @Named("apiKey") apiKey: String,
-        repository: WeatherRepository
+        repository: WeatherRepository,
     ): GetWeatherUseCase {
         return GetWeatherUseCase(city, apiKey, repository)
     }
+
+    @Provides
+    @Named("getWeatherByCoordinates")
+    fun provideGetWeatherByCoordinates(
+        @Named("latitude") latitude: Double,
+        @Named("longitude") longitude: Double,
+        @Named("apiKey") apiKey: String,
+        repository: WeatherRepository,
+    ): GetWeatherByCoordinates {
+        return GetWeatherByCoordinates(latitude, longitude, apiKey, repository)
+    }
+
 
     @Provides
     @Named("city")
@@ -51,8 +64,19 @@ object NetworkModule {
     @Provides
     @Named("apiKey")
     fun provideApiKey(): String {
-        // Devuelve el valor de la propiedad "apiKey" del archivo de configuración
         return ""
+    }
+
+    @Provides
+    @Named("latitude")
+    fun provideLatitude(): Double {
+        return 0.0
+    }
+
+    @Provides
+    @Named("longitude")
+    fun provideLongitude(): Double {
+        return 0.0
     }
 
 

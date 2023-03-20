@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.data.model.WeatherModel
+import com.example.weatherapp.data.model.WeatherProvider
+import com.example.weatherapp.domain.GetWeatherByCoordinates
 import com.example.weatherapp.domain.GetWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,6 +17,7 @@ import javax.inject.Named
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     @Named("getWeatherUseCase") private val resultGetWeatherUseCase: GetWeatherUseCase,
+    @Named("getWeatherByCoordinates") private val resultGetWeatherByCoordinates: GetWeatherByCoordinates,
     private val repository: WeatherRepository,
 ) : ViewModel() {
 
@@ -22,6 +25,10 @@ class WeatherViewModel @Inject constructor(
     val isLoading = MutableLiveData<Boolean>()
     val cityViewModel: MutableLiveData<String> = MutableLiveData()
     val apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
+    val latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
+    val longitudeViewModel: MutableLiveData<Double> = MutableLiveData()
+
+
 //    val apiKeyViewModel = MutableLiveData<String>()
 
     fun getWeatherByCity() {
@@ -32,7 +39,8 @@ class WeatherViewModel @Inject constructor(
             Log.d("CVM", apiKeyViewModel.value.toString())
 
             val currentWeather =
-                resultGetWeatherUseCase(cityViewModel.value.toString(), apiKeyViewModel.value.toString())
+                resultGetWeatherUseCase(cityViewModel.value.toString(),
+                    apiKeyViewModel.value.toString())
 
             weatherModel.postValue(currentWeather)
 
@@ -42,20 +50,23 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    fun getWeatherByCoordinates(latitude: Double, longitude: Double, apiKey: String) {
-//        viewModelScope.launch {
-//            isLoading.postValue(true)
-//
-//            val result = GetWeatherByCoordinates(latitude, longitude, apiKey).invoke()
-//
+    fun getWeatherByCoordinates() {
+        viewModelScope.launch {
+            isLoading.postValue(true)
+
+            val currentWeather = resultGetWeatherByCoordinates(
+                latitudeViewModel.value?.toDouble() ?: 0.0,
+                longitudeViewModel.value?.toDouble() ?: 0.0,
+                apiKeyViewModel.value.toString())
+
 //            val currentWeather = WeatherProvider.resultWeatherProvider
-//
-//            weatherModel.postValue(currentWeather)
-//
-//            if (!result.equals(0)) {
-//                isLoading.postValue(false)
-//            }
-//        }
+
+            weatherModel.postValue(currentWeather)
+
+            if (!currentWeather.equals(0)) {
+                isLoading.postValue(false)
+            }
+        }
     }
 }
 

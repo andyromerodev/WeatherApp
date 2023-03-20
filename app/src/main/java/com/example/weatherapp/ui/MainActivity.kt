@@ -93,8 +93,11 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
                 val latitude = locationgps?.latitude ?: 0.0
                 val longitude = locationgps?.longitude ?: 0.0
 
+                weatherViewModel.latitudeViewModel.value = latitude
+                weatherViewModel.longitudeViewModel.value = longitude
+
                 if (latitude != 0.0){
-                    weatherViewModel.getWeatherByCoordinates(latitude, longitude, apiKey)
+                    weatherViewModel.getWeatherByCoordinates()
                 }else{
                     Toast.makeText(this,"Sin obtener las coordenadas - Vuelva a intentarlo", Toast.LENGTH_SHORT).show()
                 }
