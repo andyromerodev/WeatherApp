@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -65,7 +66,12 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         })
 
         weatherViewModel.isLoading.observe(this, Observer {
+
             binding.loading.isVisible = it
+        })
+
+        weatherViewModel.viewButton.observe(this, Observer {
+            binding.buttonGPS.isVisible = it
         })
 
     }
@@ -96,10 +102,16 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
                 weatherViewModel.latitudeViewModel.value = latitude
                 weatherViewModel.longitudeViewModel.value = longitude
 
-                if (latitude != 0.0){
+                if (latitude != 0.0) {
+
+//                    binding.loading.startAnimation(AnimationUtils.loadAnimation(this,
+//                        R.anim.rotate_animation))
+
                     weatherViewModel.getWeatherByCoordinates()
-                }else{
-                    Toast.makeText(this,"Sin obtener las coordenadas - Vuelva a intentarlo", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this,
+                        "Sin obtener las coordenadas - Vuelva a intentarlo",
+                        Toast.LENGTH_SHORT).show()
                 }
 
             }
