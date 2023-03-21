@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="temperature">Temperatura actual</string>
+    <string name="temperature_min">Temperatura mínima</string>
+    <string name="temperature_max">Temperatura máxima</string>
+    <string name="thermal_feel">Sensación térmica</string>
+    <string name="humidity">Húmedad</string>
+    <string name="pressure">Presión</string>
+    <string name="weathergps">Datos del clima por GPS</string>
+    <string name="permiso">Permiso del GPS</string>
+
 </resources>
