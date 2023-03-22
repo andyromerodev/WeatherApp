@@ -14,17 +14,24 @@ import androidx.core.app.ComponentActivity
 
 class GetPermission(activity: AppCompatActivity, private val permission: String) {
 
+    private var isToastShown = false
+
     private val permissionLauncher =
         activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 when {
-                    isGranted -> Toast.makeText(activity, "PERMISO GPS OTORGADO", Toast.LENGTH_LONG)
-                        .show()
+                    isGranted ->
+                        if (!isToastShown) {
+                            Toast.makeText(activity, "PERMISO GPS OTORGADO", Toast.LENGTH_SHORT)
+                                .show()
+                            isToastShown = true
+                        }
                     activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) ->
                         Toast.makeText(activity,
                             "ESTE PERMISO ES NECESARIO PARA OBTENER LAS COORDENADAS",
-                            Toast.LENGTH_LONG).show()
-                    else -> Toast.makeText(activity, "PERMISO GPS DENEGADO", Toast.LENGTH_LONG)
+                            Toast.LENGTH_SHORT).show()
+                    else -> Toast.makeText(activity, "PERMISO GPS DENEGADO", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
