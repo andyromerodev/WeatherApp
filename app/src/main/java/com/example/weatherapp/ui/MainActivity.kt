@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
                 weatherViewModel.latitudeViewModel.value = latitude
                 weatherViewModel.longitudeViewModel.value = longitude
+                weatherViewModel.apiKeyViewModel.value = apiKey
 
                 if (latitude != 0.0) {
 
@@ -110,8 +111,8 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
                     weatherViewModel.getWeatherByCoordinates()
                 } else {
                     Toast.makeText(this,
-                        "Sin obtener las coordenadas - Vuelva a intentarlo",
-                        Toast.LENGTH_SHORT).show()
+                        "   Sin obtener las coordenadas \nVuelva a intentarlo o active el GPS",
+                        Toast.LENGTH_LONG).show()
                 }
 
             }
