@@ -23,6 +23,7 @@ class WeatherViewModel @Inject constructor(
 
     val weatherModel = MutableLiveData<WeatherModel>()
     val isLoading = MutableLiveData<Boolean>()
+    val viewButton = MutableLiveData<Boolean>()
     val cityViewModel: MutableLiveData<String> = MutableLiveData()
     val apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
     val latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
@@ -33,6 +34,7 @@ class WeatherViewModel @Inject constructor(
 
     fun getWeatherByCity() {
         viewModelScope.launch {
+            viewButton.postValue(false)
             isLoading.postValue(true)
 
             Log.d("CVM", cityViewModel.value.toString())
@@ -46,12 +48,14 @@ class WeatherViewModel @Inject constructor(
 
             if (!resultGetWeatherUseCase.equals(0)) {
                 isLoading.postValue(false)
+                viewButton.postValue(true)
             }
         }
     }
 
     fun getWeatherByCoordinates() {
         viewModelScope.launch {
+            viewButton.postValue(false)
             isLoading.postValue(true)
 
             val currentWeather = resultGetWeatherByCoordinates(
@@ -65,6 +69,7 @@ class WeatherViewModel @Inject constructor(
 
             if (!currentWeather.equals(0)) {
                 isLoading.postValue(false)
+                viewButton.postValue(true)
             }
         }
     }

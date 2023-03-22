@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:buttonStyle">@style/MyButtonStyle</item>
+    </style>
+
+    <style name="MyButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button_gray</item>
+    </style>
+
+    <style name="RobotoTextViewStyle" parent="@android:style/Widget.TextView">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+</resources>
