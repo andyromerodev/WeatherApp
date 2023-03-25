@@ -1,8 +1,10 @@
 package com.example.weatherapp.domain
 
 import com.example.weatherapp.data.WeatherRepository
+import com.example.weatherapp.data.database.entities.toDatabase
 import com.example.weatherapp.data.model.WeatherModel
 import com.example.weatherapp.data.model.WeatherProvider
+import com.example.weatherapp.domain.model.WeatherModelOnDomain
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -13,15 +15,19 @@ class GetWeatherByCoordinates @Inject constructor(
     private val repository: WeatherRepository,
 ) {
 
-    //private val repository = WeatherRepository()
-
-    suspend operator fun invoke(latitude: Double, longitude: Double, apiKey: String): WeatherModel {
+    suspend operator fun invoke(
+        latitude: Double,
+        longitude: Double,
+        apiKey: String
+    ): WeatherModelOnDomain {
 
         this.latitude = latitude
         this.longitude = longitude
         this.apiKey = apiKey
 
-        repository.getWeatherByCoordinates(this.latitude, this.longitude, this.apiKey)
-        return WeatherProvider.resultWeatherProvider
+        val weather =
+            repository.getWeatherFromApiByCoordinates(this.latitude, this.longitude, this.apiKey)
+        repository.insertWeather(weather.toDatabase())
+        return weather
     }
 }

@@ -1,34 +1,26 @@
 package com.example.weatherapp.ui
 
 import android.Manifest
-import android.app.Instrumentation.ActivityResult
 import android.content.pm.ApplicationInfo
 import android.location.Location
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
-import com.example.weatherapp.data.model.WeatherModel
-import com.example.weatherapp.data.network.WeatherService
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.getApplicationInfoCompat
+import com.example.weatherapp.ui.recyclerview.WeatherAdapter
 import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import com.example.weatherapp.utils.GetLocation
 import com.example.weatherapp.utils.GetPermission
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import okhttp3.internal.connection.Exchange
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener,
@@ -37,6 +29,8 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var apiKey: String
+
+    private lateinit var adapter: WeatherAdapter
 
     private val weatherViewModel: WeatherViewModel by viewModels()
 
@@ -50,6 +44,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         binding.buttonGPS.setOnClickListener(this)
         binding.loading.isVisible = false
         setContentView(binding.root)
+        initRecyclerView()
 
         val applicationInfo: ApplicationInfo =
             packageManager.getApplicationInfoCompat(application.packageName, 0)
@@ -81,6 +76,15 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         weatherViewModel.cityViewModel.value = query.toString()
         weatherViewModel.apiKeyViewModel.value = apiKey
         weatherViewModel.getWeatherByCity()
+
+        weatherViewModel.getAllWeather()
+        weatherViewModel.getListWeather.observe(this) { weatherList ->
+            adapter.updateData(weatherList)
+        }
+        adapter = WeatherAdapter(emptyList())
+        val manager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = manager
+        binding.recyclerView.adapter = adapter
         return true
     }
 
@@ -109,10 +113,14 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 //                        R.anim.rotate_animation))
 
                     weatherViewModel.getWeatherByCoordinates()
+                    //weatherViewModel.getAllWeather()
+
                 } else {
-                    Toast.makeText(this,
+                    Toast.makeText(
+                        this,
                         "   Sin obtener las coordenadas \nVuelva a intentarlo o active el GPS",
-                        Toast.LENGTH_LONG).show()
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
             }
@@ -120,6 +128,18 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
             e.toString()
         }
 
+    }
+
+
+    private fun initRecyclerView() {
+        weatherViewModel.getAllWeather()
+        weatherViewModel.getListWeather.observe(this) { weatherList ->
+            adapter.updateData(weatherList)
+        }
+        adapter = WeatherAdapter(emptyList())
+        val manager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = manager
+        binding.recyclerView.adapter = adapter
     }
 
 }
