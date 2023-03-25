@@ -19,14 +19,7 @@ class GetWeatherUseCase @Inject constructor(
         this.city = city
         this.apiKey = apiKey
 
-        Log.d("TAGXX", this.city)
-        Log.d("TAGXX", this.apiKey)
-        Log.d("TAGXXX", city)
-        val d = Log.d("TAGXXX", apiKey)
-
         val weather = repository.getWeatherFromApi(this.city, this.apiKey)
-
-        Log.d("TAGXXXweather", weather.toString())
 
         return if (weather.name != "") {
             repository.insertWeather(weather.toDatabase())

@@ -15,17 +15,10 @@ class WeatherRepository @Inject constructor(
     private val weatherDao: WeatherDao
 ) {
 
-    //private val api = WeatherService()
-
     suspend fun getWeatherFromApi(city: String, apiKey: String): WeatherModelOnDomain {
-        Log.d("TAGgetWeatherByCity", city)
-        Log.d("TAGgetWeatherByCity", apiKey)
 
         val response: WeatherModel = api.getWeatherByCity(city, apiKey)
 
-        Log.d("ERRORNULL", response.toDomain().toString())
-
-        //WeatherProvider.resultWeatherProvider = response
         return response.toDomain()
     }
 
@@ -63,9 +56,6 @@ class WeatherRepository @Inject constructor(
     }
 
     suspend fun getWeatherByCity(city: String, apiKey: String): WeatherModel {
-
-        Log.d("TAGgetWeatherByCity", city)
-        Log.d("TAGgetWeatherByCity", apiKey)
 
         val response = api.getWeatherByCity(city, apiKey)
         WeatherProvider.resultWeatherProvider = response

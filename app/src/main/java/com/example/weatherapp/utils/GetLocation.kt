@@ -26,7 +26,6 @@ class GetLocation {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                     val latitude = location?.latitude ?: 0.0
                     val longitude = location?.longitude ?: 0.0
-                    Log.d("LOCATIONGPS", "Latitud: $latitude, Longitud: $longitude")
                 }
 
             return location

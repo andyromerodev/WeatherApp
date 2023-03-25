@@ -109,9 +109,6 @@ class WeatherViewModel @Inject constructor(
             _viewButton.postValue(false)
             _isLoading.postValue(true)
 
-            Log.d("CVM", cityViewModel.value.toString())
-            Log.d("CVM", apiKeyViewModel.value.toString())
-
             val currentWeather =
                 resultGetWeatherUseCase(
                     cityViewModel.value.toString(),
@@ -156,9 +153,6 @@ class WeatherViewModel @Inject constructor(
             _getListWeather.postValue(currentWeather)
             _sizeList.postValue(currentWeather.size)
 
-            for (weather in currentWeather) {
-                Log.d("LISTADEWEATHER", weather.name)
-            }
         }
     }
 }

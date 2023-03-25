@@ -19,11 +19,6 @@ class GetWeatherUseCaseWork @Inject constructor(
         this.city = city
         this.apiKey = apiKey
 
-        Log.d("TAGXX", this.city)
-        Log.d("TAGXX", this.apiKey)
-        Log.d("TAGXXX", city)
-        Log.d("TAGXXX", apiKey)
-
         repository.getWeatherByCity(this.city, this.apiKey)
         return WeatherProvider.resultWeatherProvider
     }
