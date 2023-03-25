@@ -1,6 +1,7 @@
 package com.example.weatherapp.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,23 +28,86 @@ class WeatherViewModel @Inject constructor(
     private val repository: WeatherRepository,
 ) : ViewModel() {
 
-    val weatherModel = MutableLiveData<WeatherModelOnDomain>()
-    val isLoading = MutableLiveData<Boolean>()
-    val viewButton = MutableLiveData<Boolean>()
-    val getListWeather = MutableLiveData<List<WeatherModelOnDomain>>()
-    val sizeList = MutableLiveData<Int>()
-    val cityViewModel: MutableLiveData<String> = MutableLiveData()
-    val apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
-    val latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
-    val longitudeViewModel: MutableLiveData<Double> = MutableLiveData()
+    private val _weatherModel = MutableLiveData<WeatherModelOnDomain>()
+    val weatherModel: LiveData<WeatherModelOnDomain> = _weatherModel
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _viewButton = MutableLiveData<Boolean>()
+    val viewButton: LiveData<Boolean> = _viewButton
+
+    private val _getListWeather = MutableLiveData<List<WeatherModelOnDomain>>()
+    val getListWeather: LiveData<List<WeatherModelOnDomain>> = _getListWeather
+
+    private val _sizeList = MutableLiveData<Int>()
+    val sizeList: LiveData<Int> = _sizeList
+
+    private val _cityViewModel: MutableLiveData<String> = MutableLiveData()
+    val cityViewModel: LiveData<String> = _cityViewModel
+
+    private val _apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
+    val apiKeyViewModel: LiveData<String> = _apiKeyViewModel
+
+    private val _latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
+    val latitudeViewModel: LiveData<Double> = _latitudeViewModel
+
+    private val _longitudeViewModel: MutableLiveData<Double> = MutableLiveData()
+    val longitudeViewModel: LiveData<Double> = _longitudeViewModel
+
+
+    fun updateWeatherModel(weatherModel: WeatherModelOnDomain) {
+        _weatherModel.value = weatherModel
+    }
+
+    fun updateIsLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
+    }
+
+    fun updateViewButton(viewButton: Boolean) {
+        _viewButton.value = viewButton
+    }
+
+    fun updateGetListWeather(getListWeather: List<WeatherModelOnDomain>) {
+        _getListWeather.value = getListWeather
+    }
+
+    fun updateSizeList(sizeList: Int) {
+        _sizeList.value = sizeList
+    }
+
+    fun updateCityViewModel(city: String) {
+        _cityViewModel.value = city
+    }
+
+    fun updateApiKeyViewModel(apiKey: String) {
+        _apiKeyViewModel.value = apiKey
+    }
+
+    fun updateLatitudeViewModel(latitude: Double) {
+        _latitudeViewModel.value = latitude
+    }
+
+    fun updateLongitudeViewModel(longitude: Double) {
+        _longitudeViewModel.value = longitude
+    }
+
+//    val isLoading = MutableLiveData<Boolean>()
+//    val viewButton = MutableLiveData<Boolean>()
+//    val getListWeather = MutableLiveData<List<WeatherModelOnDomain>>()
+//    val sizeList = MutableLiveData<Int>()
+//    val cityViewModel: MutableLiveData<String> = MutableLiveData()
+//    val apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
+//    val latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
+//    val longitudeViewModel: MutableLiveData<Double> = MutableLiveData()
 
 
 //    val apiKeyViewModel = MutableLiveData<String>()
 
     fun getWeatherByCity() {
         viewModelScope.launch {
-            viewButton.postValue(false)
-            isLoading.postValue(true)
+            _viewButton.postValue(false)
+            _isLoading.postValue(true)
 
             Log.d("CVM", cityViewModel.value.toString())
             Log.d("CVM", apiKeyViewModel.value.toString())
@@ -54,19 +118,19 @@ class WeatherViewModel @Inject constructor(
                     apiKeyViewModel.value.toString()
                 )
 
-            weatherModel.postValue(currentWeather)
+            _weatherModel.postValue(currentWeather)
 
             if (!resultGetWeatherUseCase.equals(0)) {
-                isLoading.postValue(false)
-                viewButton.postValue(true)
+                _isLoading.postValue(false)
+                _viewButton.postValue(true)
             }
         }
     }
 
     fun getWeatherByCoordinates() {
         viewModelScope.launch {
-            viewButton.postValue(false)
-            isLoading.postValue(true)
+            _viewButton.postValue(false)
+            _isLoading.postValue(true)
 
             val currentWeather = resultGetWeatherByCoordinates(
                 latitudeViewModel.value?.toDouble() ?: 0.0,
@@ -76,11 +140,11 @@ class WeatherViewModel @Inject constructor(
 
 //            val currentWeather = WeatherProvider.resultWeatherProvider
 
-            weatherModel.postValue(currentWeather)
+            _weatherModel.postValue(currentWeather)
 
             if (!currentWeather.equals(0)) {
-                isLoading.postValue(false)
-                viewButton.postValue(true)
+                _isLoading.postValue(false)
+                _viewButton.postValue(true)
             }
         }
     }
@@ -89,8 +153,8 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
             val currentWeather = resultGetAllWeatherUseCase()
 
-            getListWeather.postValue(currentWeather)
-            sizeList.postValue(currentWeather.size)
+            _getListWeather.postValue(currentWeather)
+            _sizeList.postValue(currentWeather.size)
 
             for (weather in currentWeather) {
                 Log.d("LISTADEWEATHER", weather.name)

@@ -73,8 +73,8 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
     override fun onQueryTextSubmit(query: String?): Boolean {
 
-        weatherViewModel.cityViewModel.value = query.toString()
-        weatherViewModel.apiKeyViewModel.value = apiKey
+        weatherViewModel.updateCityViewModel(query.toString())
+        weatherViewModel.updateApiKeyViewModel(apiKey)
         weatherViewModel.getWeatherByCity()
 
         weatherViewModel.getAllWeather()
@@ -103,9 +103,9 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
                 val latitude = locationgps?.latitude ?: 0.0
                 val longitude = locationgps?.longitude ?: 0.0
 
-                weatherViewModel.latitudeViewModel.value = latitude
-                weatherViewModel.longitudeViewModel.value = longitude
-                weatherViewModel.apiKeyViewModel.value = apiKey
+                weatherViewModel.updateLatitudeViewModel(latitude)
+                weatherViewModel.updateLongitudeViewModel(longitude)
+                weatherViewModel.updateApiKeyViewModel(apiKey)
 
                 if (latitude != 0.0) {
 
