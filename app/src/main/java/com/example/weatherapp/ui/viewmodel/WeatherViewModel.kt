@@ -68,8 +68,8 @@ class WeatherViewModel @Inject constructor(
         _viewButton.value = viewButton
     }
 
-    fun updateGetListWeather(getListWeather: List<WeatherModelOnDomain>) {
-        _getListWeather.value = getListWeather
+    fun getListWeather(): List<WeatherModelOnDomain>? {
+        return _getListWeather.value
     }
 
     fun updateSizeList(sizeList: Int) {

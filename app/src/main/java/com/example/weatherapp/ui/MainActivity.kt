@@ -77,14 +77,8 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         weatherViewModel.updateApiKeyViewModel(apiKey)
         weatherViewModel.getWeatherByCity()
 
-        weatherViewModel.getAllWeather()
-        weatherViewModel.getListWeather.observe(this) { weatherList ->
-            adapter.updateData(weatherList)
-        }
-        adapter = WeatherAdapter(emptyList())
-        val manager = LinearLayoutManager(this)
-        binding.recyclerView.layoutManager = manager
-        binding.recyclerView.adapter = adapter
+        initRecyclerView()
+
         return true
     }
 
@@ -136,7 +130,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
         weatherViewModel.getListWeather.observe(this) { weatherList ->
             adapter.updateData(weatherList)
         }
-        adapter = WeatherAdapter(emptyList())
+        adapter = WeatherAdapter(weatherViewModel.getListWeather() ?: emptyList())
         val manager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = manager
         binding.recyclerView.adapter = adapter
