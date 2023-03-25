@@ -8,5 +8,6 @@
     <string name="pressure">Presión</string>
     <string name="weathergps">Datos del clima por GPS</string>
     <string name="permiso">Permiso del GPS</string>
+    <string name="cityname">Ciudad</string>
 
 </resources>
