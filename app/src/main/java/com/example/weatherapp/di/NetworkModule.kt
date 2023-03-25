@@ -1,5 +1,6 @@
 package com.example.weatherapp.di
 
+import com.example.weatherapp.core.RetrofitHelper
 import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.data.network.WeatherApiClient
 import com.example.weatherapp.domain.GetWeatherByCoordinates
@@ -9,7 +10,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -20,8 +20,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
-            .addConverterFactory(GsonConverterFactory.create()).build()
+        return RetrofitHelper.getRetrofit()
     }
 
     @Singleton
