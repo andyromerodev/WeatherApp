@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.domain.GetAllWeatherUseCase
 import com.example.weatherapp.domain.GetWeatherByCoordinates
 import com.example.weatherapp.domain.GetWeatherUseCase
@@ -19,8 +18,6 @@ class WeatherViewModel @Inject constructor(
     @Named("getWeatherUseCase") private val resultGetWeatherUseCase: GetWeatherUseCase,
     @Named("getWeatherByCoordinates") private val resultGetWeatherByCoordinates: GetWeatherByCoordinates,
     @Named("getAllWeatherUseCase") private val resultGetAllWeatherUseCase: GetAllWeatherUseCase,
-
-    private val repository: WeatherRepository,
 ) : ViewModel() {
 
     private val _weatherModel = MutableLiveData<WeatherModelOnDomain>()

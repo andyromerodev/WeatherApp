@@ -1,11 +1,9 @@
 package com.example.weatherapp.di
 
-import android.os.Build
 import com.example.weatherapp.data.WeatherRepository
 import com.example.weatherapp.data.network.WeatherApiClient
 import com.example.weatherapp.domain.GetWeatherByCoordinates
 import com.example.weatherapp.domain.GetWeatherUseCase
-import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
