@@ -1,16 +1,9 @@
 package com.example.weatherapp.utils
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import androidx.activity.viewModels
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
-import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat
-import com.example.weatherapp.ui.viewmodel.WeatherViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 
