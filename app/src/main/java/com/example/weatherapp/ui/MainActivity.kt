@@ -3,14 +3,13 @@ package com.example.weatherapp.ui
 import android.Manifest
 import android.content.pm.ApplicationInfo
 import android.location.Location
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.ActivityMainBinding
@@ -20,7 +19,6 @@ import com.example.weatherapp.ui.viewmodel.WeatherViewModel
 import com.example.weatherapp.utils.GetLocation
 import com.example.weatherapp.utils.GetPermission
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener,
@@ -103,11 +101,7 @@ class MainActivity : AppCompatActivity(), androidx.appcompat.widget.SearchView.O
 
                 if (latitude != 0.0) {
 
-//                    binding.loading.startAnimation(AnimationUtils.loadAnimation(this,
-//                        R.anim.rotate_animation))
-
                     weatherViewModel.getWeatherByCoordinates()
-                    //weatherViewModel.getAllWeather()
 
                 } else {
                     Toast.makeText(
