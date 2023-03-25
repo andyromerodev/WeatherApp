@@ -1,21 +1,16 @@
 package com.example.weatherapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weatherapp.data.WeatherRepository
-import com.example.weatherapp.data.model.WeatherModel
-import com.example.weatherapp.data.model.WeatherProvider
 import com.example.weatherapp.domain.GetAllWeatherUseCase
 import com.example.weatherapp.domain.GetWeatherByCoordinates
 import com.example.weatherapp.domain.GetWeatherUseCase
 import com.example.weatherapp.domain.model.WeatherModelOnDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -40,40 +35,20 @@ class WeatherViewModel @Inject constructor(
     private val _getListWeather = MutableLiveData<List<WeatherModelOnDomain>>()
     val getListWeather: LiveData<List<WeatherModelOnDomain>> = _getListWeather
 
-    private val _sizeList = MutableLiveData<Int>()
-    val sizeList: LiveData<Int> = _sizeList
-
     private val _cityViewModel: MutableLiveData<String> = MutableLiveData()
-    val cityViewModel: LiveData<String> = _cityViewModel
+    private val cityViewModel: LiveData<String> = _cityViewModel
 
     private val _apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
-    val apiKeyViewModel: LiveData<String> = _apiKeyViewModel
+    private val apiKeyViewModel: LiveData<String> = _apiKeyViewModel
 
     private val _latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
-    val latitudeViewModel: LiveData<Double> = _latitudeViewModel
+    private val latitudeViewModel: LiveData<Double> = _latitudeViewModel
 
     private val _longitudeViewModel: MutableLiveData<Double> = MutableLiveData()
-    val longitudeViewModel: LiveData<Double> = _longitudeViewModel
-
-
-    fun updateWeatherModel(weatherModel: WeatherModelOnDomain) {
-        _weatherModel.value = weatherModel
-    }
-
-    fun updateIsLoading(isLoading: Boolean) {
-        _isLoading.value = isLoading
-    }
-
-    fun updateViewButton(viewButton: Boolean) {
-        _viewButton.value = viewButton
-    }
+    private val longitudeViewModel: LiveData<Double> = _longitudeViewModel
 
     fun getListWeather(): List<WeatherModelOnDomain>? {
         return _getListWeather.value
-    }
-
-    fun updateSizeList(sizeList: Int) {
-        _sizeList.value = sizeList
     }
 
     fun updateCityViewModel(city: String) {
@@ -91,18 +66,6 @@ class WeatherViewModel @Inject constructor(
     fun updateLongitudeViewModel(longitude: Double) {
         _longitudeViewModel.value = longitude
     }
-
-//    val isLoading = MutableLiveData<Boolean>()
-//    val viewButton = MutableLiveData<Boolean>()
-//    val getListWeather = MutableLiveData<List<WeatherModelOnDomain>>()
-//    val sizeList = MutableLiveData<Int>()
-//    val cityViewModel: MutableLiveData<String> = MutableLiveData()
-//    val apiKeyViewModel: MutableLiveData<String> = MutableLiveData()
-//    val latitudeViewModel: MutableLiveData<Double> = MutableLiveData()
-//    val longitudeViewModel: MutableLiveData<Double> = MutableLiveData()
-
-
-//    val apiKeyViewModel = MutableLiveData<String>()
 
     fun getWeatherByCity() {
         viewModelScope.launch {
@@ -135,8 +98,6 @@ class WeatherViewModel @Inject constructor(
                 apiKeyViewModel.value.toString()
             )
 
-//            val currentWeather = WeatherProvider.resultWeatherProvider
-
             _weatherModel.postValue(currentWeather)
 
             if (!currentWeather.equals(0)) {
@@ -151,7 +112,6 @@ class WeatherViewModel @Inject constructor(
             val currentWeather = resultGetAllWeatherUseCase()
 
             _getListWeather.postValue(currentWeather)
-            _sizeList.postValue(currentWeather.size)
 
         }
     }
