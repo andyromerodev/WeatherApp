@@ -1,4 +1,4 @@
-package com.example.weatherapp.data
+package com.example.weatherapp.data.repository
 
 import com.example.weatherapp.data.database.dao.WeatherDao
 import com.example.weatherapp.data.database.entities.WeatherEntity
@@ -6,21 +6,22 @@ import com.example.weatherapp.data.model.WeatherModel
 import com.example.weatherapp.data.network.WeatherService
 import com.example.weatherapp.domain.model.WeatherModelOnDomain
 import com.example.weatherapp.domain.model.toDomain
+import com.example.weatherapp.domain.repository.WeatherRepository
 import javax.inject.Inject
 
-class WeatherRepository @Inject constructor(
+class WeatherRepositoryImpl @Inject constructor(
     private val api: WeatherService,
     private val weatherDao: WeatherDao
-) {
+): WeatherRepository {
 
-    suspend fun getWeatherFromApi(city: String, apiKey: String): WeatherModelOnDomain {
+    override suspend fun getWeatherFromApi(city: String, apiKey: String): WeatherModelOnDomain {
 
         val response: WeatherModel = api.getWeatherByCity(city, apiKey)
 
         return response.toDomain()
     }
 
-    suspend fun getWeatherFromApiByCoordinates(
+    override suspend fun getWeatherFromApiByCoordinates(
         latitude: Double,
         longitude: Double,
         apiKey: String
@@ -30,7 +31,7 @@ class WeatherRepository @Inject constructor(
     }
 
 
-    suspend fun getWeatherFromDataBase(cityName: String): WeatherModelOnDomain {
+    override suspend fun getWeatherFromDataBase(cityName: String): WeatherModelOnDomain {
 
         return try {
             val response = weatherDao.getWeather(cityName)
@@ -41,14 +42,14 @@ class WeatherRepository @Inject constructor(
     }
 
 
-    suspend fun getAllWeather(): List<WeatherModelOnDomain> {
+    override suspend fun getAllWeather(): List<WeatherModelOnDomain> {
 
         val response = weatherDao.getAllWeather()
         return response.map { it.toDomain() }
 
     }
 
-    suspend fun insertWeather(weather: WeatherEntity) {
+    override suspend fun insertWeather(weather: WeatherEntity) {
         weatherDao.insertWeather(weather)
     }
 

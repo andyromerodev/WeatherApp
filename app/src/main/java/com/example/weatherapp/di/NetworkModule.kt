@@ -1,10 +1,14 @@
 package com.example.weatherapp.di
 
 import com.example.weatherapp.core.RetrofitHelper
-import com.example.weatherapp.data.WeatherRepository
+import com.example.weatherapp.data.database.dao.WeatherDao
+import com.example.weatherapp.data.repository.WeatherRepositoryImpl
 import com.example.weatherapp.data.network.WeatherApiClient
-import com.example.weatherapp.domain.GetWeatherByCoordinates
-import com.example.weatherapp.domain.GetWeatherUseCase
+import com.example.weatherapp.data.network.WeatherService
+import com.example.weatherapp.domain.repository.WeatherRepository
+import com.example.weatherapp.domain.usecase.GetWeatherByCoordinates
+import com.example.weatherapp.domain.usecase.GetWeatherUseCase
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,6 +55,14 @@ object NetworkModule {
         return GetWeatherByCoordinates(latitude, longitude, apiKey, repository)
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideWeatherRepository(
+//        weatherApiService: WeatherService,
+//        weatherDao: WeatherDao
+//    ): WeatherRepository {
+//        return WeatherRepositoryImpl(weatherApiService, weatherDao)
+//    }
 
     @Provides
     @Named("city")

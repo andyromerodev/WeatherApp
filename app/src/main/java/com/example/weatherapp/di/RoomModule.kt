@@ -2,10 +2,10 @@ package com.example.weatherapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.weatherapp.data.WeatherRepository
+import com.example.weatherapp.data.repository.WeatherRepositoryImpl
 import com.example.weatherapp.data.database.WeatherDatabase
-import com.example.weatherapp.domain.GetAllWeatherUseCase
-import com.example.weatherapp.domain.GetWeatherUseCase
+import com.example.weatherapp.domain.repository.WeatherRepository
+import com.example.weatherapp.domain.usecase.GetAllWeatherUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
