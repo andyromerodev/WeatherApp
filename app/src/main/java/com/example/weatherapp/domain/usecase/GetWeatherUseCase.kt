@@ -1,8 +1,9 @@
-package com.example.weatherapp.domain
+package com.example.weatherapp.domain.usecase
 
-import com.example.weatherapp.data.WeatherRepository
+import com.example.weatherapp.data.repository.WeatherRepositoryImpl
 import com.example.weatherapp.data.database.entities.toDatabase
 import com.example.weatherapp.domain.model.WeatherModelOnDomain
+import com.example.weatherapp.domain.repository.WeatherRepository
 import javax.inject.Inject
 import javax.inject.Named
 

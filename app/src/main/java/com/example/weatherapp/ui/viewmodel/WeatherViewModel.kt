@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weatherapp.domain.GetAllWeatherUseCase
-import com.example.weatherapp.domain.GetWeatherByCoordinates
-import com.example.weatherapp.domain.GetWeatherUseCase
+import com.example.weatherapp.domain.usecase.GetAllWeatherUseCase
+import com.example.weatherapp.domain.usecase.GetWeatherByCoordinates
+import com.example.weatherapp.domain.usecase.GetWeatherUseCase
 import com.example.weatherapp.domain.model.WeatherModelOnDomain
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
